@@ -26,19 +26,18 @@ theorem UCoalesces_equivalence :
   symm := @UCoalesces_symm
   trans := @UCoalesces_trans
 
+@[simp] theorem iter_U_one (j : Nat) : iter U j 1 = 1 := by
+  induction j with
+  | zero => rfl
+  | succ j ih =>
+      simp [iter, ih, U_one]
+
 /-- Coalescing with 1 is exactly hitting 1, since U fixes 1. -/
 theorem UCoalesces_one_iff_hits_one (a : Nat) :
     UCoalesces a 1 ↔ ∃ m : Nat, iter U m a = 1 := by
   constructor
   · rintro ⟨i, j, hij⟩
-    refine ⟨i, ?_⟩
-    calc
-      iter U i a = iter U j 1 := hij
-      _ = 1 := by
-        induction j with
-        | zero => rfl
-        | succ j ih =>
-            simp [iter, ih, U_one]
+    exact ⟨i, hij.trans (iter_U_one j)⟩
   · rintro ⟨m, hm⟩
     exact ⟨m, 0, by simpa using hm⟩
 
