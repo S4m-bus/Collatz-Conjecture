@@ -7,3 +7,4 @@ import CollatzConjecture.GlobalCoalescence
 import CollatzConjecture.MergerArithmetic
 import CollatzConjecture.StructuralConsequences
 import CollatzConjecture.Section9
+import CollatzConjecture.PaperLogic
