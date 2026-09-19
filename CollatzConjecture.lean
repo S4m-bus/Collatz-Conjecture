@@ -4,5 +4,6 @@ import CollatzConjecture.OddCompressed
 import CollatzConjecture.OddArithmetic
 import CollatzConjecture.OddPathArithmetic
 import CollatzConjecture.GlobalCoalescence
+import CollatzConjecture.MergerArithmetic
 import CollatzConjecture.StructuralConsequences
 import CollatzConjecture.Section9
