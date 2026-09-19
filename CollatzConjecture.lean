@@ -5,6 +5,7 @@ import CollatzConjecture.OddArithmetic
 import CollatzConjecture.OddPathArithmetic
 import CollatzConjecture.GlobalCoalescence
 import CollatzConjecture.MergerArithmetic
+import CollatzConjecture.OddGlobal
 import CollatzConjecture.StructuralConsequences
 import CollatzConjecture.Section9
 import CollatzConjecture.PaperLogic
