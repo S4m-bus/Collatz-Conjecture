@@ -75,7 +75,7 @@ theorem common_word_affine_separation
   have hB := finite_odd_path_expansion hb m
   omega
 
-/-- Synchronous merger under an identical finite exponent word forces
+/-- Synchronous merger under an identical exponent word forces
     identical starting values. -/
 theorem no_distinct_synchronous_merger_same_word
     {a b : ℕ → ℕ} {rho : ℕ → ℕ}
@@ -86,58 +86,9 @@ theorem no_distinct_synchronous_merger_same_word
     a 0 = b 0 := by
   have hsep := common_word_affine_separation ha hb m
   rw [hend] at hsep
-  have hpow : 0 < 3 ^ m := pow_pos (by omega) m
-  omega
+  have hmul : 3 ^ m * b 0 = 3 ^ m * a 0 := by
+    exact Nat.add_left_cancel hsep
+  exact Nat.mul_left_cancel (pow_pos (by omega) m) hmul
 
-/-- If two distinct starts merge synchronously, then they cannot have shared
-    the same complete exponent word. -/
-theorem distinct_sync_merger_requires_different_word
-    {a b : ℕ → ℕ} {rho sigma : ℕ → ℕ}
-    (ha : FollowsOddWord a rho)
-    (hb : FollowsOddWord b sigma)
-    {m : ℕ}
-    (hne : a 0 ≠ b 0)
-    (hend : a m = b m) :
-    ¬ (∀ k < m, rho k = sigma k) := by
-  intro hsame
-  -- Build equality of cumulative exponents and additive terms only on the
-  -- finite prefix, then compare the two exact endpoint formulas.
-  have hR : cumExp rho m = cumExp sigma m := by
-    induction m with
-    | zero => rfl
-    | succ m ih =>
-        simp only [cumExp_succ]
-        have hm : rho m = sigma m := hsame m (Nat.lt_succ_self m)
-        have hpref : ∀ k < m, rho k = sigma k := by
-          intro k hk
-          exact hsame k (Nat.lt_trans hk (Nat.lt_succ_self m))
-        have ih' := ih hpref
-        omega
-  have hS : addTerm rho m = addTerm sigma m := by
-    induction m with
-    | zero => rfl
-    | succ m ih =>
-        simp only [addTerm_succ]
-        have hpref : ∀ k < m, rho k = sigma k := by
-          intro k hk
-          exact hsame k (Nat.lt_trans hk (Nat.lt_succ_self m))
-        have ih' := ih hpref
-        have hRm : cumExp rho m = cumExp sigma m := by
-          induction m with
-          | zero => rfl
-          | succ t iht =>
-              simp only [cumExp_succ]
-              have ht : rho t = sigma t :=
-                hsame t (Nat.lt_trans (Nat.lt_succ_self t) (Nat.lt_succ_self (t + 1)))
-              have hp : ∀ k < t, rho k = sigma k := by
-                intro k hk
-                exact hsame k (Nat.lt_trans hk (by omega))
-              have iht' := iht hp
-              omega
-        rw [ih', hRm]
-  have hA := finite_odd_path_expansion ha m
-  have hB := finite_odd_path_expansion hb m
-  rw [hend, hR, hS] at hA
-  omega
 
 end Collatz
