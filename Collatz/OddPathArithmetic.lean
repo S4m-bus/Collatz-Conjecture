@@ -88,7 +88,7 @@ theorem no_distinct_synchronous_merger_same_word
   rw [hend] at hsep
   have hmul : 3 ^ m * b 0 = 3 ^ m * a 0 := by
     exact Nat.add_left_cancel hsep
-  exact Nat.mul_left_cancel (pow_pos (by norm_num) m) hmul
+  exact (mul_left_cancel_iff_of_pos (show 0 < 3 ^ m by positivity)).mp hmul
 
 
 end Collatz
