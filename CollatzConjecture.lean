@@ -1,5 +1,8 @@
+import CollatzConjecture.Basic
 import CollatzConjecture.Forward
+import CollatzConjecture.OddCompressed
 import CollatzConjecture.OddArithmetic
+import CollatzConjecture.OddPathArithmetic
+import CollatzConjecture.GlobalCoalescence
+import CollatzConjecture.StructuralConsequences
 import CollatzConjecture.Section9
-
-import CollatzConjecture.PaperExactSection9
