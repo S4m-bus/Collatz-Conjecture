@@ -3,6 +3,7 @@ import CollatzConjecture.Forward
 import CollatzConjecture.OddCompressed
 import CollatzConjecture.OddArithmetic
 import CollatzConjecture.OddPathArithmetic
+import CollatzConjecture.ActualOddArithmetic
 import CollatzConjecture.GlobalCoalescence
 import CollatzConjecture.MergerArithmetic
 import CollatzConjecture.OddGlobal
