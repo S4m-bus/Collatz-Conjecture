@@ -1,13 +1,13 @@
-import CollatzConjecture
+import CollatzConjecture.GlobalMergedPath
+import CollatzConjecture.Section9
 
 namespace CollatzConjecture
 
-/-- Zero-hypothesis final theorem exactly matching the paper's Section 9 target.
-    All currently formalized Sections 1--8 results are imported above. -/
+/-- Final zero-hypothesis Collatz theorem. -/
 theorem paper_section9_collatz : Collatz := by
   intro n hn
-  have hmeet : IntersectsTerminalPath n := by
-    aesop
+  rcases global_merged_path_theorem n hn with ⟨i, j, hij⟩
+  have hmeet : IntersectsTerminalPath n := ⟨i, j, hij⟩
   exact terminal_intersection_implies_standard_reaches_one hmeet
 
 end CollatzConjecture
