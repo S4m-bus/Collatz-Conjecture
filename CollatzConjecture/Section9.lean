@@ -125,15 +125,5 @@ theorem terminal_intersection_implies_standard_reaches_one
   exact stopped_reaches_one_implies_standard_reaches_one
     ((intersects_terminal_iff_reaches_one n).mp h)
 
-/-- Once the preceding sections have produced the global merged-path theorem,
-    this lemma is the exact Section-9 closure from that theorem to the ordinary
-    Collatz statement.  This is intentionally a helper lemma; the final
-    whole-paper theorem must instantiate it with the actually proved global
-    theorem from the preceding module. -/
-theorem section9_closure_from_global_merge
-    (hglobal : GlobalTerminalMerge) :
-    Collatz := by
-  intro n hn
-  exact terminal_intersection_implies_standard_reaches_one (hglobal n hn)
-
 end CollatzConjecture
+
