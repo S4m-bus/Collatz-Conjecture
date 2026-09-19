@@ -71,27 +71,21 @@ theorem UCoalesces_shifted {a b : Nat}
     (h : UCoalesces a b) (r s : Nat) :
     UCoalesces (iter U r a) (iter U s b) := by
   rcases h with ⟨i, j, hij⟩
+  have htail := forward_coalescence U hij (r + s)
   refine ⟨i + s, j + r, ?_⟩
   calc
     iter U (i + s) (iter U r a)
-        = iter U (r + (i + s)) a := by
-            rw [← iter_add]
-    _ = iter U (s + (r + i)) a := by
+        = iter U (r + (i + s)) a :=
+            (iter_add U r (i + s) a).symm
+    _ = iter U (i + (r + s)) a := by
             congr 1
             omega
-    _ = iter U s (iter U (r + i) a) := iter_add U (r+i) s a
-    _ = iter U s (iter U (i + r) a) := by
-            congr 2
-            omega
-    _ = iter U s (iter U r (iter U i a)) := by
-            rw [← iter_add]
-    _ = iter U s (iter U r (iter U j b)) := by rw [hij]
-    _ = iter U s (iter U (j + r) b) := by
-            rw [iter_add]
-    _ = iter U (j + r) (iter U s b) := by
-            rw [← iter_add]
+    _ = iter U (j + (r + s)) b := htail
+    _ = iter U (s + (j + r)) b := by
             congr 1
             omega
+    _ = iter U (j + r) (iter U s b) :=
+            iter_add U s (j + r) b
 
 /-- Exact forward synchronization of an asynchronous odd-path merger. -/
 theorem U_merger_synchronization
