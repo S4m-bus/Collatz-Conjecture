@@ -1,0 +1,22 @@
+name: Lean 4 final theorem test
+
+on:
+  push:
+    branches: [paper-exact-verification]
+  workflow_dispatch:
+
+jobs:
+  final-theorem:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install elan
+        run: |
+          curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- -y
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - name: Update dependencies
+        run: |
+          lake update
+          lake exe cache get
+      - name: Check exact zero-hypothesis paper theorem
+        run: lake env lean CollatzConjecture/PaperExactSection9.lean
