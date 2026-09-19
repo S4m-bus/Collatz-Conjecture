@@ -1,3 +1,5 @@
 import CollatzConjecture.Forward
 import CollatzConjecture.OddArithmetic
 import CollatzConjecture.Section9
+
+import CollatzConjecture.PaperExactSection9
