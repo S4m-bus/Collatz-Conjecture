@@ -30,14 +30,6 @@ theorem iter_add {α : Type*} (f : α → α) (m n : ℕ) (x : α) :
   | succ m ih =>
       simp [Nat.succ_add, ih]
 
-theorem iter_succ_right {α : Type*} (f : α → α) (k : ℕ) (x : α) :
-    iter f (k + 1) x = f (iter f k x) := by
-  induction k generalizing x with
-  | zero => rfl
-  | succ k ih =>
-      simp only [iter_succ]
-      rw [ih (f x), ih x]
-
 @[simp] theorem C_one : C 1 = 1 := by
   simp [C]
 
