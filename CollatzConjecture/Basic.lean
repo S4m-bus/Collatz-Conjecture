@@ -21,14 +21,20 @@ theorem iter_add {α : Type*} (f : α → α) (m n : Nat) (x : α) :
   | succ n ih =>
       rw [Nat.add_succ, iter_succ, iter_succ, ih]
 
+/-- The ordinary Collatz map. -/
+def T (n : Nat) : Nat :=
+  if n % 2 = 0 then n / 2 else 3 * n + 1
+
 /-- The paper's stopped-at-1 Collatz map. -/
 def C (n : Nat) : Nat :=
-  if n = 1 then 1
-  else if n % 2 = 0 then n / 2
-  else 3 * n + 1
+  if n = 1 then 1 else T n
 
 @[simp] theorem C_one : C 1 = 1 := by
   simp [C]
+
+theorem C_eq_T_of_ne_one {n : Nat} (h : n ≠ 1) :
+    C n = T n := by
+  simp [C, h]
 
 @[simp] theorem iter_C_one (k : Nat) : iter C k 1 = 1 := by
   induction k with
@@ -47,8 +53,16 @@ def IntersectsTerminalPath (n : Nat) : Prop :=
 def GlobalTerminalMerge : Prop :=
   ∀ n : Nat, 0 < n → IntersectsTerminalPath n
 
-/-- The stopped-map Collatz conjecture. -/
-def Collatz : Prop :=
+/-- The stopped-map Collatz statement. -/
+def StoppedCollatz : Prop :=
   ∀ n : Nat, 0 < n → ReachesOne n
+
+/-- Reaching 1 under the ordinary Collatz map. -/
+def StandardReachesOne (n : Nat) : Prop :=
+  ∃ k : Nat, iter T k n = 1
+
+/-- The ordinary Collatz conjecture. -/
+def Collatz : Prop :=
+  ∀ n : Nat, 0 < n → StandardReachesOne n
 
 end CollatzConjecture
