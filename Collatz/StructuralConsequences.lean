@@ -48,10 +48,12 @@ theorem hasRepeat_gives_periodic_tail {α : Type*} (f : α → α) {x : α}
 theorem hits_has_firstHit {α : Type*} (f : α → α) {terminal x : α}
     (h : Hits f x terminal) :
     ∃ k : ℕ, FirstHit f terminal x k := by
+  classical
   let k := Nat.find h
   refine ⟨k, Nat.find_spec h, ?_⟩
-  intro i hi
-  exact Nat.find_min' h hi
+  intro i hi hPi
+  have hki : k ≤ i := Nat.find_min' h hPi
+  omega
 
 /-- Hence every terminating orbit has a simple first-hit prefix. -/
 theorem hits_has_simple_firstHit {α : Type*} (f : α → α) {terminal x : α}
