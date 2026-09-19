@@ -2,7 +2,7 @@ name: Lean 4 verification
 
 on:
   push:
-    branches: [main, lean4-verification]
+    branches: [main, lean4-verification, paper-exact-verification]
   pull_request:
 
 jobs:
