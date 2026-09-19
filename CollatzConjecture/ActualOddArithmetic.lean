@@ -61,4 +61,48 @@ theorem actual_merged_prefix_cross_identity
           ring
     _ = 2 ^ R a m * (3 ^ n * b + S b n) := by rw [← hB]
 
+/-- Equal finite valuation words give equal cumulative exponents and additive terms. -/
+theorem equal_word_equal_prefix_data
+    {a b : Nat} {m : Nat}
+    (hword : ∀ k : Nat, k < m → rho a k = rho b k) :
+    R a m = R b m ∧ S a m = S b m := by
+  induction m with
+  | zero =>
+      simp [R, S, cumExp, addTerm]
+  | succ m ih =>
+      have hpref : ∀ k : Nat, k < m → rho a k = rho b k := by
+        intro k hk
+        exact hword k (Nat.lt_trans hk (Nat.lt_succ_self m))
+      rcases ih hpref with ⟨hR, hS⟩
+      have hr : rho a m = rho b m := hword m (Nat.lt_succ_self m)
+      constructor
+      · simp [R, cumExp, hR, hr]
+      · simp [S, addTerm, R, cumExp, hR, hS]
+
+/-- Exact common-word affine separation for actual U-orbits, in
+    subtraction-free natural-number form. -/
+theorem actual_common_word_affine_separation
+    {a b : Nat} {m : Nat}
+    (hword : ∀ k : Nat, k < m → rho a k = rho b k) :
+    2 ^ R a m * iter U m a + 3 ^ m * b =
+      2 ^ R a m * iter U m b + 3 ^ m * a := by
+  rcases equal_word_equal_prefix_data hword with ⟨hR, hS⟩
+  have hA := actual_finite_odd_path_expansion a m
+  have hB := actual_finite_odd_path_expansion b m
+  rw [hR, hS] at hB
+  omega
+
+/-- Distinct actual starts cannot merge synchronously after carrying the
+    same complete finite valuation word. -/
+theorem actual_no_common_word_synchronous_merger
+    {a b : Nat} {m : Nat}
+    (hword : ∀ k : Nat, k < m → rho a k = rho b k)
+    (hendpoint : iter U m a = iter U m b) :
+    a = b := by
+  have hsep := actual_common_word_affine_separation hword
+  rw [hendpoint] at hsep
+  have hmul : 3 ^ m * b = 3 ^ m * a := by
+    exact Nat.add_left_cancel hsep
+  exact (mul_left_cancel_iff_of_pos (show 0 < 3 ^ m by positivity)).mp hmul.symm
+
 end CollatzConjecture
