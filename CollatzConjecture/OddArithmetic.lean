@@ -72,7 +72,8 @@ theorem common_word_no_synchronous_merger
   have h := common_word_prefix_separation ha hb m
   rw [hend, sub_self, mul_zero] at h
   have hpow : (3 : Int) ^ m ≠ 0 := pow_ne_zero _ (by norm_num)
+  have hzero : (3 : Int) ^ m * (a 0 - b 0) = 0 := h.symm
   apply sub_eq_zero.mp
-  exact (mul_eq_zero.mp h).resolve_left hpow
+  exact (mul_eq_zero.mp hzero).resolve_left hpow
 
 end CollatzConjecture
