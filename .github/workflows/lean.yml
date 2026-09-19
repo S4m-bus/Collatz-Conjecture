@@ -17,4 +17,5 @@ jobs:
       - name: Build
         run: |
           lake update
+          lake exe cache get
           lake build
