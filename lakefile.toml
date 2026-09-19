@@ -1,0 +1,11 @@
+name = "collatz_conjecture"
+version = "0.1.0"
+defaultTargets = ["Collatz"]
+
+[[lean_lib]]
+name = "Collatz"
+
+[[require]]
+name = "mathlib"
+git = "https://github.com/leanprover-community/mathlib4.git"
+rev = "v4.34.0"
