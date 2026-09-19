@@ -61,4 +61,55 @@ theorem U_hittingSet_laminar {x y : Nat}
       HittingSet U y ⊆ HittingSet U x :=
   hittingSet_laminar U hne
 
+/-- Every forward shift stays in the same eventual coalescence class. -/
+theorem UCoalesces_iterate (a : Nat) (r : Nat) :
+    UCoalesces a (iter U r a) := by
+  exact ⟨r, 0, rfl⟩
+
+/-- Forward shifts of already coalescing starts still coalesce. -/
+theorem UCoalesces_shifted {a b : Nat}
+    (h : UCoalesces a b) (r s : Nat) :
+    UCoalesces (iter U r a) (iter U s b) := by
+  rcases h with ⟨i, j, hij⟩
+  refine ⟨i + s, j + r, ?_⟩
+  calc
+    iter U (i + s) (iter U r a)
+        = iter U (r + (i + s)) a := by
+            rw [← iter_add]
+    _ = iter U (s + (r + i)) a := by
+            congr 1
+            omega
+    _ = iter U s (iter U (r + i) a) := iter_add U (r+i) s a
+    _ = iter U s (iter U (i + r) a) := by
+            congr 2
+            omega
+    _ = iter U s (iter U r (iter U i a)) := by
+            rw [← iter_add]
+    _ = iter U s (iter U r (iter U j b)) := by rw [hij]
+    _ = iter U s (iter U (j + r) b) := by
+            rw [iter_add]
+    _ = iter U (j + r) (iter U s b) := by
+            rw [← iter_add]
+            congr 1
+            omega
+
+/-- Exact forward synchronization of an asynchronous odd-path merger. -/
+theorem U_merger_synchronization
+    {a b z : Nat} {i j : Nat}
+    (hij : j ≤ i)
+    (ha : iter U i a = z)
+    (hb : iter U j b = z) :
+    let c := iter U (i - j) a
+    iter U j c = z ∧ iter U j b = z := by
+  dsimp
+  constructor
+  · calc
+      iter U j (iter U (i - j) a)
+          = iter U ((i - j) + j) a := by rw [← iter_add]
+      _ = iter U i a := by
+            congr 1
+            omega
+      _ = z := ha
+  · exact hb
+
 end CollatzConjecture
