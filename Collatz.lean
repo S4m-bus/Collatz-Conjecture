@@ -1,4 +1,5 @@
 import Collatz.Basic
+import Collatz.OddCompressed
 import Collatz.OddPathArithmetic
 import Collatz.StructuralConsequences
 import Collatz.Section9Audit
