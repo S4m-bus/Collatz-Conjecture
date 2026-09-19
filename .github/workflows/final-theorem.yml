@@ -18,5 +18,7 @@ jobs:
         run: |
           lake update
           lake exe cache get
+      - name: Build verified paper modules
+        run: lake build
       - name: Check exact zero-hypothesis paper theorem
         run: lake env lean CollatzConjecture/PaperExactSection9.lean
