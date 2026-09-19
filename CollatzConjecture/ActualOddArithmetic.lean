@@ -15,14 +15,8 @@ def rho (a : Nat) (k : Nat) : Nat :=
 theorem actual_U_follows_odd_word (a : Nat) :
     FollowsOddWord (oddOrbit a) (rho a) := by
   intro k
-  have hfac := U_factorization (oddOrbit a k)
-  calc
-    2 ^ rho a k * oddOrbit a (k + 1)
-        = 2 ^ v2 (oddOrbit a k) * U (oddOrbit a k) := by
-            simp [rho, oddOrbit, iter]
-            ring
-    _ = U (oddOrbit a k) * 2 ^ v2 (oddOrbit a k) := by ring
-    _ = 3 * oddOrbit a k + 1 := hfac
+  simpa [rho, oddOrbit, iter, Nat.mul_comm] using
+    (U_factorization (oddOrbit a k))
 
 /-- Cumulative valuation along the actual U orbit. -/
 def R (a : Nat) (m : Nat) : Nat :=
@@ -74,10 +68,22 @@ theorem equal_word_equal_prefix_data
         intro k hk
         exact hword k (Nat.lt_trans hk (Nat.lt_succ_self m))
       rcases ih hpref with ⟨hR, hS⟩
-      have hr : rho a m = rho b m := hword m (Nat.lt_succ_self m)
+      have hr : rho a m = rho b m :=
+        hword m (Nat.lt_succ_self m)
       constructor
-      · simp [R, cumExp, hR, hr]
-      · simp [S, addTerm, R, cumExp, hR, hS]
+      · change
+          cumExp (rho a) (m + 1) =
+            cumExp (rho b) (m + 1)
+        simp only [cumExp_succ]
+        rw [hR, hr]
+      · change
+          addTerm (rho a) (m + 1) =
+            addTerm (rho b) (m + 1)
+        simp only [addTerm_succ]
+        rw [hS]
+        have hcum : cumExp (rho a) m = cumExp (rho b) m := by
+          simpa [R] using hR
+        rw [hcum]
 
 /-- Exact common-word affine separation for actual U-orbits, in
     subtraction-free natural-number form. -/
@@ -89,7 +95,10 @@ theorem actual_common_word_affine_separation
   rcases equal_word_equal_prefix_data hword with ⟨hR, hS⟩
   have hA := actual_finite_odd_path_expansion a m
   have hB := actual_finite_odd_path_expansion b m
-  rw [hR, hS] at hB
+  rw [← hR, ← hS] at hB
+  change
+    2 ^ R a m * oddOrbit a m + 3 ^ m * b =
+      2 ^ R a m * oddOrbit b m + 3 ^ m * a
   omega
 
 /-- Distinct actual starts cannot merge synchronously after carrying the
