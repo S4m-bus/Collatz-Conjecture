@@ -70,20 +70,21 @@ theorem equal_word_equal_prefix_data
       rcases ih hpref with ⟨hR, hS⟩
       have hr : rho a m = rho b m :=
         hword m (Nat.lt_succ_self m)
+      have hcum : cumExp (rho a) m = cumExp (rho b) m := by
+        simpa [R] using hR
+      have hadd : addTerm (rho a) m = addTerm (rho b) m := by
+        simpa [S] using hS
       constructor
       · change
           cumExp (rho a) (m + 1) =
             cumExp (rho b) (m + 1)
         simp only [cumExp_succ]
-        rw [hR, hr]
+        rw [hcum, hr]
       · change
           addTerm (rho a) (m + 1) =
             addTerm (rho b) (m + 1)
         simp only [addTerm_succ]
-        rw [hS]
-        have hcum : cumExp (rho a) m = cumExp (rho b) m := by
-          simpa [R] using hR
-        rw [hcum]
+        rw [hadd, hcum]
 
 /-- Exact common-word affine separation for actual U-orbits, in
     subtraction-free natural-number form. -/
