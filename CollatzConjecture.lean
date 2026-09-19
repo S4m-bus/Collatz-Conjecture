@@ -10,4 +10,3 @@ import CollatzConjecture.OddGlobal
 import CollatzConjecture.StructuralConsequences
 import CollatzConjecture.HamiltonianConsequences
 import CollatzConjecture.Section9
-import CollatzConjecture.PaperLogic
