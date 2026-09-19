@@ -1,1 +1,3 @@
-import Collatz.Basic\nimport Collatz.OddPathArithmetic\nimport Collatz.Section9Audit\n
+import Collatz.Basic
+import Collatz.OddPathArithmetic
+import Collatz.Section9Audit
